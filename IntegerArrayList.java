@@ -9,6 +9,14 @@ public class IntegerArrayList implements IntegerList{
         size=0;
     }
 
+    private void resize(){
+        Integer[] newArray = new Integer[values.length*2];
+
+        for (int i=0;i<values.length;i++){
+            newArray[i]=values[i];
+        }
+        values=newArray;
+    }
 
     public void add(Integer val){
         if (size==values.length){
@@ -21,6 +29,22 @@ public class IntegerArrayList implements IntegerList{
 
         values[size]=val;
         size++;
+    }
+
+    public void add(int index, Integer val){
+        if (index<0 || index>size){
+            throw new IndexOutOfBoundsException(index+" is not a valid index.");
+        }
+        if (size==values.length){
+            resize();
+
+        }
+        for (int i=size;i>index;i--){
+            values[i]=values[i-1];
+        }
+        values[index]=val;
+        size++;
+
     }
 
     public int size(){
@@ -42,6 +66,23 @@ public class IntegerArrayList implements IntegerList{
 
     public boolean isEmpty(){
         return size==0;
+    }
+
+    public Integer get(int i){
+        return values[i];
+    }
+
+    public int indexOf(Integer val){
+        for (int i=0;i<values.length;i++){
+            if (values[i].equals(val)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public boolean contains(Integer val){
+        return indexOf(val)>=0;
     }
 
     @Override
