@@ -1,3 +1,5 @@
+import java.lang.reflect.Array;
+
 public class IntegerArrayList implements IntegerList{
     private Integer[] values;
     private int size;
@@ -12,7 +14,7 @@ public class IntegerArrayList implements IntegerList{
     private void resize(){
         Integer[] newArray = new Integer[values.length*2];
 
-        for (int i=0;i<values.length;i++){
+        for (int i=0;i<size;i++){
             newArray[i]=values[i];
         }
         values=newArray;
@@ -20,13 +22,8 @@ public class IntegerArrayList implements IntegerList{
 
     public void add(Integer val){
         if (size==values.length){
-            Integer[] newArray = new Integer[values.length*2];
-            for (int i=0;i<values.length;i++){
-                newArray[i] = values[i];
-            }
-            values = newArray;
+            resize();
         }
-
         values[size]=val;
         size++;
     }
@@ -37,7 +34,6 @@ public class IntegerArrayList implements IntegerList{
         }
         if (size==values.length){
             resize();
-
         }
         for (int i=size;i>index;i--){
             values[i]=values[i-1];
@@ -45,6 +41,17 @@ public class IntegerArrayList implements IntegerList{
         values[index]=val;
         size++;
 
+    }
+
+    public Integer remove (int index){
+        Integer removedVal;
+        if (index<0 || index>=size){throw new IndexOutOfBoundsException(index+" is not a valid index.");}
+        removedVal=values[index];
+        for(int i=index;i<size;i++){
+            values[i]=values[i+1];
+        }
+        size=size-1;
+        return removedVal;
     }
 
     public int size(){
@@ -59,7 +66,7 @@ public class IntegerArrayList implements IntegerList{
         }
     }
 
-    @Override
+
     public void clear() {
         size = 0;
     }
@@ -68,12 +75,24 @@ public class IntegerArrayList implements IntegerList{
         return size==0;
     }
 
+    public boolean equals(List<Integer> other){
+        for (int i = 0; i < size; i++) {
+            if(values[i]==other.get(i)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public Integer get(int i){
-        return values[i];
+        if (i<0 || i>=size){throw new IndexOutOfBoundsException(i+" is not a valid index.");}
+        else {
+            return values[i];
+        }
     }
 
     public int indexOf(Integer val){
-        for (int i=0;i<values.length;i++){
+        for (int i=0;i<size;i++){
             if (values[i].equals(val)){
                 return i;
             }
@@ -85,13 +104,16 @@ public class IntegerArrayList implements IntegerList{
         return indexOf(val)>=0;
     }
 
-    @Override
+
     public String toString() {
         String result="[";
-        for (int i=0;i<size-1;i++){
-            result += values[i] + ", ";
+        if(size!=0) {
+            for (int i = 0; i < size-1; i++) {
+                result += values[i] + ", ";
+            }
+            result+=values[size-1];
         }
-        result += values[size-1]+"]";
+        result += "]";
         return result;
     }
 }
