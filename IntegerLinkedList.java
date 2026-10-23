@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class IntegerLinkedList implements IntegerList{
 
     private Node head;
@@ -135,6 +137,16 @@ public class IntegerLinkedList implements IntegerList{
         }
         return yes;
     }
+
+    public boolean containsRecursive(Integer val, Node e) {
+        if (e == null) {
+            return false;
+        }
+        if (e.value.equals(val)) {
+            return true;
+        }
+        return containsRecursive(val, e.next);
+    }
     public boolean equals(List<Integer> other){
         if (other.size() != size){
             return false;
@@ -162,6 +174,21 @@ public class IntegerLinkedList implements IntegerList{
             return 0;
         }
         return countRecursive(e.next)+1;
+    }
+
+    public String toStringReversed(){
+        String s = "";
+        ArrayList<Integer> e = new ArrayList<>(size);
+
+        for (int i = 0; i < size; i++) {
+            e.add(getNodeAt(i).value);
+        }
+
+        for (int f = size - 1; f >= 0; f--) {
+            s = s + " " + e.get(f);
+        }
+
+        return s.trim();
     }
 
 
